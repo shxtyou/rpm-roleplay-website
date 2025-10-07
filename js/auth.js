@@ -9,42 +9,8 @@ class AuthSystem {
     loadUsers() {
         const users = localStorage.getItem('rpm_smi_users');
         if (!users) {
-            // Создаем начальных пользователей
-            const defaultUsers = [
-                {
-                    id: 1,
-                    username: 'admin',
-                    email: 'admin@rpm-smi.com',
-                    password: 'admin2024',
-                    role: 'chief_editor',
-                    displayName: 'Главный редактор',
-                    faction: 'СМИ',
-                    createdAt: new Date().toISOString(),
-                    isActive: true
-                },
-                {
-                    id: 2,
-                    username: 'editor',
-                    email: 'editor@rpm-smi.com',
-                    password: 'editor2024',
-                    role: 'editor',
-                    displayName: 'Редактор',
-                    faction: 'СМИ',
-                    createdAt: new Date().toISOString(),
-                    isActive: true
-                },
-                {
-                    id: 3,
-                    username: 'journalist',
-                    email: 'journalist@rpm-smi.com',
-                    password: 'journalist2024',
-                    role: 'journalist',
-                    displayName: 'Журналист',
-                    faction: 'СМИ',
-                    createdAt: new Date().toISOString(),
-                    isActive: true
-                }
-            ];
+            // Только пустой массив - без демо-аккаунтов
+            const defaultUsers = [];
             this.saveUsers(defaultUsers);
             return defaultUsers;
         }
@@ -187,6 +153,30 @@ class AuthSystem {
 
         return { success: false, error: 'Пользователь не найден' };
     }
+
+    // Создание первого администратора (для инициализации)
+    createFirstAdmin(userData) {
+        if (this.users.length > 0) {
+            return { success: false, error: 'Система уже инициализирована' };
+        }
+
+        const adminUser = {
+            id: 1,
+            username: userData.username,
+            email: userData.email,
+            password: userData.password,
+            role: 'chief_editor',
+            displayName: userData.displayName,
+            faction: 'СМИ',
+            createdAt: new Date().toISOString(),
+            isActive: true
+        };
+
+        this.users.push(adminUser);
+        this.saveUsers(this.users);
+
+        return { success: true, user: adminUser };
+    }
 }
 
 // Глобальный экземпляр системы аутентификации
@@ -212,4 +202,19 @@ function hasPermission(requiredRole) {
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     authSystem.updateUI();
+    
+    // Автоматическое создание первого админа если пользователей нет
+    if (authSystem.users.length === 0) {
+        const firstAdminData = {
+            username: 'admin',
+            email: 'admin@rpm-smi.com',
+            password: 'admin123',
+            displayName: 'Главный редактор'
+        };
+        
+        const result = authSystem.createFirstAdmin(firstAdminData);
+        if (result.success) {
+            console.log('Первый администратор создан. Логин: admin, Пароль: admin123');
+        }
+    }
 });
