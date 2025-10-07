@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Все новости - RPM Gazette</title>
+    <title>Все новости - RPM SMI</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="dark-theme">
@@ -12,26 +12,37 @@
             <div class="header-top">
                 <div class="header-info">
                     <span class="date" id="current-date"></span>
-                    <span class="weather" id="current-weather">Штат RPM: +22°C</span>
+                    <span class="weather">Онлайн: <span id="online-count">0</span> игроков</span>
                 </div>
                 <div class="header-actions">
-                    <a href="admin.html" class="admin-link">Редакция</a>
+                    <div class="auth-buttons" id="auth-buttons">
+                        <a href="login.html" class="auth-btn">Вход</a>
+                        <a href="submit-news.html" class="auth-btn secondary">Прислать новость</a>
+                    </div>
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <span class="user-name" id="user-name"></span>
+                        <a href="profile.html" class="auth-btn">Профиль</a>
+                        <a href="admin.html" class="auth-btn" id="admin-link" style="display: none;">Редакция</a>
+                        <button onclick="logout()" class="auth-btn secondary">Выйти</button>
+                    </div>
                     <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
                 </div>
             </div>
             
             <div class="header-main">
-                <h1 class="newspaper-title">RPM GAZETTE</h1>
-                <p class="newspaper-slogan">Официальное издание штата | Ежедневные новости</p>
+                <div class="logo">
+                    <h1 class="newspaper-title">RPM SMI</h1>
+                    <p class="newspaper-slogan">Официальные новости штата | Средства Массовой Информации</p>
+                </div>
             </div>
             
             <nav class="newspaper-nav">
                 <ul>
                     <li><a href="index.html">Главная</a></li>
                     <li><a href="news.html" class="active">Все новости</a></li>
-                    <li><a href="categories.html">Рубрики</a></li>
-                    <li><a href="about.html">О нас</a></li>
-                    <li><a href="contact.html">Контакты</a></li>
+                    <li><a href="submit-news.html">Прислать новость</a></li>
+                    <li><a href="interviews.html">Интервью</a></li>
+                    <li><a href="polls.html">Опросы</a></li>
                 </ul>
             </nav>
         </div>
@@ -48,11 +59,8 @@
                 <select id="category-filter">
                     <option value="all">Все категории</option>
                     <option value="politics">Политика</option>
-                    <option value="economy">Экономика</option>
-                    <option value="society">Общество</option>
                     <option value="crime">Криминал</option>
-                    <option value="culture">Культура</option>
-                    <option value="sports">Спорт</option>
+                    <option value="society">Общество</option>
                 </select>
                 
                 <select id="sort-filter">
@@ -82,31 +90,35 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>RPM Gazette</h4>
-                    <p>Официальное издание штата</p>
+                    <h4>RPM SMI</h4>
+                    <p>Официальные новости штата</p>
                     <p>Основано в 2024 году</p>
                 </div>
                 <div class="footer-section">
                     <h4>Рубрики</h4>
                     <a href="news.html?category=politics">Политика</a>
-                    <a href="news.html?category=economy">Экономика</a>
                     <a href="news.html?category=crime">Криминал</a>
                     <a href="news.html?category=society">Общество</a>
                 </div>
                 <div class="footer-section">
+                    <h4>Участие</h4>
+                    <a href="submit-news.html">Прислать новость</a>
+                    <a href="interviews.html">Интервью</a>
+                    <a href="polls.html">Опросы</a>
+                </div>
+                <div class="footer-section">
                     <h4>Редакция</h4>
-                    <a href="about.html">О нас</a>
-                    <a href="contact.html">Контакты</a>
-                    <a href="admin.html">Для журналистов</a>
+                    <a href="login.html">Вход для сотрудников</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 RPM Gazette. Все права защищены.</p>
+                <p>&copy; 2024 RPM SMI. Все права защищены.</p>
             </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/articles.js"></script>
     <script src="js/news-archive.js"></script>
 </body>
