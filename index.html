@@ -3,26 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPM Gazette - Официальное издание штата</title>
+    <title>RPM SMI - Официальные новости штата</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
 </head>
 <body class="dark-theme">
+    <!-- Шапка -->
     <header class="newspaper-header">
         <div class="container">
             <div class="header-top">
                 <div class="header-info">
                     <span class="date" id="current-date"></span>
+                    <span class="weather">Онлайн: <span id="online-count">0</span> игроков</span>
                     <span class="weather" id="current-weather">Штат RPM: +22°C</span>
                 </div>
                 <div class="header-actions">
-                    <a href="admin.html" class="admin-link">Редакция</a>
+                    <div class="auth-buttons" id="auth-buttons">
+                        <a href="login.html" class="auth-btn">Вход</a>
+                        <a href="submit-news.html" class="auth-btn secondary">Прислать новость</a>
+                    </div>
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <span class="user-name" id="user-name"></span>
+                        <a href="profile.html" class="auth-btn">Профиль</a>
+                        <a href="admin.html" class="auth-btn" id="admin-link" style="display: none;">Редакция</a>
+                        <button onclick="logout()" class="auth-btn secondary">Выйти</button>
+                    </div>
                     <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
                 </div>
             </div>
             
             <div class="header-main">
-                <h1 class="newspaper-title">RPM GAZETTE</h1>
-                <p class="newspaper-slogan">Официальное издание штата | Ежедневные новости</p>
+                <div class="logo">
+                    <h1 class="newspaper-title">RPM SMI</h1>
+                    <p class="newspaper-slogan">Официальные новости штата | Средства Массовой Информации</p>
+                </div>
             </div>
             
             <nav class="newspaper-nav">
@@ -30,6 +44,8 @@
                     <li><a href="index.html" class="active">Главная</a></li>
                     <li><a href="news.html">Все новости</a></li>
                     <li><a href="categories.html">Рубрики</a></li>
+                    <li><a href="interviews.html">Интервью</a></li>
+                    <li><a href="polls.html">Опросы</a></li>
                     <li><a href="about.html">О нас</a></li>
                     <li><a href="contact.html">Контакты</a></li>
                 </ul>
@@ -37,6 +53,17 @@
         </div>
     </header>
 
+    <!-- Поиск -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Поиск по новостям...">
+                <button onclick="performSearch()">🔍</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Экстренные новости -->
     <section class="breaking-news" id="breaking-news" style="display: none;">
         <div class="container">
             <div class="breaking-tag">СРОЧНО</div>
@@ -47,83 +74,122 @@
         </div>
     </section>
 
+    <!-- Основной контент -->
     <main class="container">
         <div class="content-grid">
+            <!-- Главная колонка -->
             <div class="main-column">
+                <!-- Ведущая статья -->
                 <div id="featured-article" class="lead-article">
-                    <!-- Ведущая статья загрузится через JS -->
+                    <!-- Загрузится через JS -->
                 </div>
 
+                <!-- Важные новости -->
                 <section class="important-news">
                     <h2 class="section-title">Последние новости</h2>
                     <div class="news-list" id="latest-articles">
-                        <!-- Статьи загрузятся через JS -->
+                        <!-- Загрузится через JS -->
                     </div>
                 </section>
             </div>
 
+            <!-- Боковая панель -->
             <aside class="sidebar">
-                <section class="quick-news">
-                    <h3>Коротко о главном</h3>
-                    <div class="quick-list" id="quick-news">
-                        <!-- Быстрые новости -->
+                <!-- Статистика фракций -->
+                <section class="factions-widget">
+                    <h3>🏛️ Активность фракций</h3>
+                    <div class="factions-list" id="factions-list">
+                        <!-- Загрузится через JS -->
                     </div>
                 </section>
 
-                <section class="weather-widget">
-                    <h3>Погода в штате</h3>
-                    <div class="weather-info">
-                        <div class="weather-main">
-                            <span class="weather-temp">+22°C</span>
-                            <span class="weather-desc">Солнечно</span>
-                        </div>
-                    </div>
-                </section>
-
+                <!-- Популярные статьи -->
                 <section class="most-read">
-                    <h3>Самое читаемое</h3>
+                    <h3>🔥 Самое читаемое</h3>
                     <div class="most-read-list" id="most-read">
-                        <!-- Популярные статьи -->
+                        <!-- Загрузится через JS -->
+                    </div>
+                </section>
+
+                <!-- Быстрые новости -->
+                <section class="quick-news">
+                    <h3>⚡ Коротко о главном</h3>
+                    <div class="quick-list" id="quick-news">
+                        <!-- Загрузится через JS -->
+                    </div>
+                </section>
+
+                <!-- Опрос -->
+                <section class="poll-widget">
+                    <h3>📊 Текущий опрос</h3>
+                    <div class="poll-content" id="current-poll">
+                        <!-- Загрузится через JS -->
                     </div>
                 </section>
             </aside>
         </div>
 
-        <section class="news-sections">
-            <div class="section-row" id="categories-grid">
-                <!-- Категории загрузятся через JS -->
+        <!-- Рубрики -->
+        <section class="categories-preview">
+            <h2 class="section-title">Основные рубрики</h2>
+            <div class="categories-grid">
+                <a href="news.html?category=politics" class="category-preview politics">
+                    <div class="category-icon">🏛️</div>
+                    <h3>Политика</h3>
+                    <p>Новости правительства, выборы, законы</p>
+                </a>
+                <a href="news.html?category=crime" class="category-preview crime">
+                    <div class="category-icon">🚔</div>
+                    <h3>Криминал</h3>
+                    <p>Правоохранительные органы и происшествия</p>
+                </a>
+                <a href="news.html?category=society" class="category-preview society">
+                    <div class="category-icon">👥</div>
+                    <h3>Общество</h3>
+                    <p>Жизнь граждан, события, культура</p>
+                </a>
             </div>
         </section>
     </main>
 
+    <!-- Подвал -->
     <footer class="newspaper-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>RPM Gazette</h4>
-                    <p>Официальное издание штата</p>
+                    <h4>RPM SMI</h4>
+                    <p>Официальные новости штата</p>
                     <p>Основано в 2024 году</p>
                 </div>
                 <div class="footer-section">
                     <h4>Рубрики</h4>
-                    <div id="footer-categories">
-                        <!-- Категории -->
-                    </div>
+                    <a href="news.html?category=politics">Политика</a>
+                    <a href="news.html?category=crime">Криминал</a>
+                    <a href="news.html?category=society">Общество</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Участие</h4>
+                    <a href="submit-news.html">Прислать новость</a>
+                    <a href="interviews.html">Интервью</a>
+                    <a href="polls.html">Опросы</a>
                 </div>
                 <div class="footer-section">
                     <h4>Редакция</h4>
                     <a href="about.html">О нас</a>
                     <a href="contact.html">Контакты</a>
-                    <a href="admin.html">Для журналистов</a>
+                    <a href="login.html">Вход для сотрудников</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 RPM Gazette. Все права защищены.</p>
+                <p>&copy; 2024 RPM SMI. Все права защищены.</p>
             </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/articles.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/search.js"></script>
 </body>
 </html>
