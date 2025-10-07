@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опросы - RPM SMI</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-theme">
+    <header class="newspaper-header">
+        <div class="container">
+            <div class="header-top">
+                <div class="header-info">
+                    <span class="date" id="current-date"></span>
+                    <span class="weather">Онлайн: <span id="online-count">0</span> игроков</span>
+                </div>
+                <div class="header-actions">
+                    <div class="auth-buttons" id="auth-buttons">
+                        <a href="login.html" class="auth-btn">Вход</a>
+                        <a href="submit-news.html" class="auth-btn secondary">Прислать новость</a>
+                    </div>
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <span class="user-name" id="user-name"></span>
+                        <a href="profile.html" class="auth-btn">Профиль</a>
+                        <a href="admin.html" class="auth-btn" id="admin-link" style="display: none;">Редакция</a>
+                        <button onclick="logout()" class="auth-btn secondary">Выйти</button>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+                </div>
+            </div>
+            
+            <div class="header-main">
+                <div class="logo">
+                    <h1 class="newspaper-title">RPM SMI</h1>
+                    <p class="newspaper-slogan">Официальные новости штата | Средства Массовой Информации</p>
+                </div>
+            </div>
+            
+            <nav class="newspaper-nav">
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="news.html">Все новости</a></li>
+                    <li><a href="submit-news.html">Прислать новость</a></li>
+                    <li><a href="interviews.html">Интервью</a></li>
+                    <li><a href="polls.html" class="active">Опросы</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Опросы общественного мнения</h1>
+            <p>Узнайте, что думают жители штата RPM о важных вопросах. Примите участие в голосованиях!</p>
+        </div>
+
+        <div class="polls-content">
+            <!-- Активный опрос -->
+            <section class="active-poll-section">
+                <h2>Текущий опрос</h2>
+                <div class="active-poll" id="active-poll">
+                    <div class="no-active-poll">
+                        <h3>Сейчас нет активных опросов</h3>
+                        <p>Новые опросы появятся здесь в ближайшее время</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Архив опросов -->
+            <section class="polls-archive">
+                <h2>Архив опросов</h2>
+                <div class="archive-filters">
+                    <select id="poll-category-filter">
+                        <option value="all">Все категории</option>
+                        <option value="politics">Политика</option>
+                        <option value="society">Общество</option>
+                        <option value="crime">Криминал</option>
+                        <option value="economy">Экономика</option>
+                    </select>
+                    <select id="poll-status-filter">
+                        <option value="completed">Завершенные</option>
+                        <option value="all">Все опросы</option>
+                    </select>
+                </div>
+                <div class="polls-grid" id="polls-archive">
+                    <!-- Опросы загрузятся через JS -->
+                </div>
+            </section>
+
+            <!-- Предложить опрос -->
+            <section class="suggest-poll">
+                <div class="suggest-poll-card">
+                    <h3>Есть идея для опроса?</h3>
+                    <p>Предложите тему для следующего голосования. Лучшие идеи будут реализованы!</p>
+                    <button onclick="showPollSuggestionForm()" class="btn btn-primary">Предложить опрос</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Модальное окно предложения опроса -->
+    <div id="poll-suggestion-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Предложить тему опроса</h3>
+                <button onclick="closePollSuggestionModal()" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="poll-suggestion-form">
+                    <div class="form-group">
+                        <label for="suggestion-topic">Тема опроса *</label>
+                        <input type="text" id="suggestion-topic" required placeholder="О чем должен быть опрос?">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suggestion-category">Категория *</label>
+                        <select id="suggestion-category" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="politics">Политика</option>
+                            <option value="society">Общество</option>
+                            <option value="crime">Криминал</option>
+                            <option value="economy">Экономика</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suggestion-question">Вопрос для опроса *</label>
+                        <textarea id="suggestion-question" rows="3" required placeholder="Сформулируйте основной вопрос..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suggestion-options">Варианты ответов *</label>
+                        <textarea id="suggestion-options" rows="4" required placeholder="Каждый вариант с новой строки"></textarea>
+                        <small>Вводите каждый вариант ответа с новой строки</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suggestion-reason">Почему эта тема важна? *</label>
+                        <textarea id="suggestion-reason" rows="3" required placeholder="Обоснуйте актуальность этой темы..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suggestion-contact">Ваши контакты для связи</label>
+                        <input type="text" id="suggestion-contact" placeholder="Discord, Telegram и т.д.">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Отправить предложение</button>
+                        <button type="button" onclick="closePollSuggestionModal()" class="btn btn-secondary">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="newspaper-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>RPM SMI</h4>
+                    <p>Официальные новости штата</p>
+                    <p>Основано в 2024 году</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Участие</h4>
+                    <a href="submit-news.html">Прислать новость</a>
+                    <a href="interviews.html">Интервью</a>
+                    <a href="polls.html">Опросы</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Редакция</h4>
+                    <a href="login.html">Вход для сотрудников</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 RPM SMI. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Система опросов
+        class PollSystem {
+            constructor() {
+                this.polls = this.loadPolls();
+                this.votes = this.loadVotes();
+            }
+
+            loadPolls() {
+                return JSON.parse(localStorage.getItem('polls') || '[]');
+            }
+
+            loadVotes() {
+                return JSON.parse(localStorage.getItem('poll_votes') || '{}');
+            }
+
+            savePolls(polls) {
+                localStorage.setItem('polls', JSON.stringify(polls));
+                this.polls = polls;
+            }
+
+            saveVotes(votes) {
+                localStorage.setItem('poll_votes', JSON.stringify(votes));
+                this.votes = votes;
+            }
+
+            // Создание нового опроса
+            createPoll(pollData) {
+                const newPoll = {
+                    id: Date.now(),
+                    question: pollData.question,
+                    options: pollData.options.map((option, index) => ({
+                        id: index + 1,
+                        text: option,
+                        votes: 0
+                    })),
+                    category: pollData.category,
+                    isActive: true,
+                    totalVotes: 0,
+                    createdBy: authSystem.currentUser ? authSystem.currentUser.displayName : 'Редакция',
+                    createdAt: new Date().toISOString(),
+                    endsAt: pollData.endsAt
+                };
+
+                this.polls.unshift(newPoll);
+                this.savePolls(this.polls);
+                return newPoll;
+            }
+
+            // Голосование в опросе
+            vote(pollId, optionId) {
+                if (!authSystem.currentUser) {
+                    return { success: false, error: 'Для голосования требуется авторизация' };
+                }
+
+                const userId = authSystem.currentUser.id;
+                const poll = this.polls.find(p => p.id === pollId);
+
+                if (!poll) {
+                    return { success: false, error: 'Опрос не найден' };
+                }
+
+                if (!poll.isActive) {
+                    return { success: false, error: 'Этот опрос завершен' };
+                }
+
+                // Проверяем, голосовал ли уже пользователь
+                if (this.votes[userId] && this.votes[userId][pollId]) {
+                    return { success: false, error: 'Вы уже голосовали в этом опросе' };
+                }
+
+                const option = poll.options.find(o => o.id === optionId);
+                if (!option) {
+                    return { success: false, error: 'Вариант ответа не найден' };
+                }
+
+                // Обновляем голоса
+                option.votes++;
+                poll.totalVotes++;
+
+                // Сохраняем информацию о голосовании
+                if (!this.votes[userId]) {
+                    this.votes[userId] = {};
+                }
+                this.votes[userId][pollId] = optionId;
+
+                this.savePolls(this.polls);
+                this.saveVotes(this.votes);
+
+                return { success: true, poll };
+            }
+
+            // Проверка, голосовал ли пользователь
+            hasVoted(pollId) {
+                if (!authSystem.currentUser) return false;
+                const userId = authSystem.currentUser.id;
+                return !!(this.votes[userId] && this.votes[userId][pollId]);
+            }
+
+            // Получение активных опросов
+            getActivePolls() {
+                return this.polls.filter(poll => poll.isActive);
+            }
+
+            // Получение завершенных опросов
+            getCompletedPolls() {
+                return this.polls.filter(poll => !poll.isActive);
+            }
+
+            // Отображение активного опроса
+            displayActivePoll() {
+                const activePollContainer = document.getElementById('active-poll');
+                const activePolls = this.getActivePolls();
+
+                if (activePolls.length === 0) {
+                    activePollContainer.innerHTML = `
+                        <div class="no-active-poll">
+                            <h3>Сейчас нет активных опросов</h3>
+                            <p>Новые опросы появятся здесь в ближайшее время</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const poll = activePolls[0]; // Показываем только один активный опрос
+                const hasVoted = this.hasVoted(poll.id);
+
+                activePollContainer.innerHTML = `
+                    <div class="poll-card active" data-poll-id="${poll.id}">
+                        <div class="poll-header">
+                            <div class="poll-category">${poll.category.toUpperCase()}</div>
+                            <div class="poll-date">До ${new Date(poll.endsAt).toLocaleDateString('ru-RU')}</div>
+                        </div>
+                        <h3 class="poll-question">${poll.question}</h3>
+                        <div class="poll-options">
+                            ${poll.options.map(option => `
+                                <div class="poll-option">
+                                    ${hasVoted ? `
+                                        <div class="poll-result">
+                                            <div class="option-text">${option.text}</div>
+                                            <div class="option-stats">
+                                                <div class="vote-bar">
+                                                    <div class="vote-fill" style="width: ${poll.totalVotes > 0 ? (option.votes / poll.totalVotes) * 100 : 0}%"></div>
+                                                </div>
+                                                <div class="vote-count">${option.votes} (${poll.totalVotes > 0 ? Math.round((option.votes / poll.totalVotes) * 100) : 0}%)</div>
+                                            </div>
+                                        </div>
+                                    ` : `
+                                        <button onclick="pollSystem.castVote(${poll.id}, ${option.id})" class="option-btn">
+                                            ${option.text}
+                                        </button>
+                                    `}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="poll-footer">
+                            <div class="total-votes">Всего голосов: ${poll.totalVotes}</div>
+                            ${!hasVoted ? `
+                                <div class="poll-notice">Вы еще не голосовали в этом опросе</div>
+                            ` : `
+                                <div class="poll-notice voted">Спасибо за ваш голос!</div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Отображение архива опросов
+            displayPollsArchive() {
+                const archiveContainer = document.getElementById('polls-archive');
+                const categoryFilter = document.getElementById('poll-category-filter').value;
+                const statusFilter = document.getElementById('poll-status-filter').value;
+
+                let filteredPolls = this.polls;
+
+                // Фильтрация по категории
+                if (categoryFilter !== 'all') {
+                    filteredPolls = filteredPolls.filter(poll => poll.category === categoryFilter);
+                }
+
+                // Фильтрация по статусу
+                if (statusFilter === 'completed') {
+                    filteredPolls = filteredPolls.filter(poll => !poll.isActive);
+                }
+
+                if (filteredPolls.length === 0) {
+                    archiveContainer.innerHTML = `
+                        <div class="no-polls">
+                            <h3>Опросы не найдены</h3>
+                            <p>Попробуйте изменить параметры фильтрации</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                archiveContainer.innerHTML = filteredPolls.map(poll => `
+                    <div class="poll-card ${poll.isActive ? 'active' : 'completed'}" data-poll-id="${poll.id}">
+                        <div class="poll-header">
+                            <div class="poll-category">${poll.category.toUpperCase()}</div>
+                            <div class="poll-status ${poll.isActive ? 'active' : 'completed'}">
+                                ${poll.isActive ? 'Активен' : 'Завершен'}
+                            </div>
+                        </div>
+                        <h3 class="poll-question">${poll.question}</h3>
+                        <div class="poll-results">
+                            ${poll.options.map(option => `
+                                <div class="poll-result">
+                                    <div class="option-text">${option.text}</div>
+                                    <div class="option-stats">
+                                        <div class="vote-bar">
+                                            <div class="vote-fill" style="width: ${poll.totalVotes > 0 ? (option.votes / poll.totalVotes) * 100 : 0}%"></div>
+                                        </div>
+                                        <div class="vote-count">${option.votes} (${poll.totalVotes > 0 ? Math.round((option.votes / poll.totalVotes) * 100) : 0}%)</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="poll-footer">
+                            <div class="total-votes">Всего голосов: ${poll.totalVotes}</div>
+                            <div class="poll-date">${new Date(poll.createdAt).toLocaleDateString('ru-RU')}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Голосование
+            castVote(pollId, optionId) {
+                const result = this.vote(pollId, optionId);
+                
+                if (result.success) {
+                    this.displayActivePoll();
+                    this.displayPollsArchive();
+                    this.showNotification('Ваш голос учтен!', 'success');
+                } else {
+                    this.showNotification(result.error, 'error');
+                }
+            }
+
+            // Показать уведомление
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `poll-notification ${type}`;
+                notification.textContent = message;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 1rem 1.5rem;
+                    border-radius: 6px;
+                    color: white;
+                    font-weight: bold;
+                    z-index: 1000;
+                `;
+
+                if (type === 'success') {
+                    notification.style.background = '#27ae60';
+                } else {
+                    notification.style.background = '#e74c3c';
+                }
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Глобальный экземпляр системы опросов
+        const pollSystem = new PollSystem();
+
+        // Функции для модальных окон
+        function showPollSuggestionForm() {
+            document.getElementById('poll-suggestion-modal').style.display = 'flex';
+        }
+
+        function closePollSuggestionModal() {
+            document.getElementById('poll-suggestion-modal').style.display = 'none';
+            document.getElementById('poll-suggestion-form').reset();
+        }
+
+        // Обработка формы предложения опроса
+        document.getElementById('poll-suggestion-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitPollSuggestion();
+        });
+
+        function submitPollSuggestion() {
+            const formData = {
+                topic: document.getElementById('suggestion-topic').value,
+                category: document.getElementById('suggestion-category').value,
+                question: document.getElementById('suggestion-question').value,
+                options: document.getElementById('suggestion-options').value.split('\n').filter(opt => opt.trim()),
+                reason: document.getElementById('suggestion-reason').value,
+                contact: document.getElementById('suggestion-contact').value,
+                submittedAt: new Date().toISOString()
+            };
+
+            // Валидация
+            if (!formData.topic || !formData.category || !formData.question || formData.options.length < 2 || !formData.reason) {
+                alert('Пожалуйста, заполните все обязательные поля и укажите минимум 2 варианта ответа');
+                return;
+            }
+
+            savePollSuggestion(formData);
+            showSuggestionSuccess();
+            closePollSuggestionModal();
+        }
+
+        function savePollSuggestion(formData) {
+            let suggestions = JSON.parse(localStorage.getItem('poll_suggestions') || '[]');
+            
+            const suggestion = {
+                id: Date.now(),
+                ...formData,
+                status: 'pending'
+            };
+
+            suggestions.unshift(suggestion);
+            localStorage.setItem('poll_suggestions', JSON.stringify(suggestions));
+        }
+
+        function showSuggestionSuccess() {
+            alert('Ваше предложение отправлено в редакцию! Мы рассмотрим его в ближайшее время.');
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            pollSystem.displayActivePoll();
+            pollSystem.displayPollsArchive();
+
+            // Обработчики фильтров
+            document.getElementById('poll-category-filter').addEventListener('change', function() {
+                pollSystem.displayPollsArchive();
+            });
+
+            document.getElementById('poll-status-filter').addEventListener('change', function() {
+                pollSystem.displayPollsArchive();
+            });
+        });
+    </script>
+
+    <style>
+        .polls-content {
+            margin: 2rem 0;
+        }
+
+        .active-poll-section {
+            margin-bottom: 4rem;
+        }
+
+        .poll-card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .poll-card.active {
+            border-left: 4px solid var(--primary);
+        }
+
+        .poll-card.completed {
+            border-left: 4px solid #95a5a6;
+        }
+
+        .poll-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .poll-category {
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .poll-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .poll-status.active {
+            background: #27ae60;
+            color: white;
+        }
+
+        .poll-status.completed {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .poll-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .poll-question {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .poll-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            background: var(--background);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: var(--surface);
+        }
+
+        .poll-results {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .poll-result {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .option-text {
+            flex: 1;
+            color: var(--text);
+            min-width: 200px;
+        }
+
+        .option-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 150px;
+        }
+
+        .vote-bar {
+            flex: 1;
+            background: var(--background);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            min-width: 100px;
+        }
+
+        .vote-fill {
+            background: var(--primary);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .vote-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .poll-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .total-votes {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .poll-notice {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .poll-notice.voted {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .no-active-poll, .no-polls {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--surface);
+            border-radius: 8px;
+            border: 2px dashed var(--border);
+        }
+
+        .no-active-poll h3, .no-polls h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .no-active-poll p, .no-polls p {
+            color: var(--text-secondary);
+        }
+
+        .archive-filters {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .archive-filters select {
+            padding: 0.75rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text);
+            min-width: 200px;
+        }
+
+        .polls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .suggest-poll {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .suggest-poll-card {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .suggest-poll-card h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .suggest-poll-card p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            color: var(--text);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group small {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .polls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .archive-filters {
+                flex-direction: column;
+            }
+            
+            .archive-filters select {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .poll-result {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .option-stats {
+                min-width: auto;
+            }
+            
+            .poll-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>
