@@ -1,164 +1,518 @@
 /* Стили для админ-панели */
-#login-screen {
+#admin-auth {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(13, 13, 13, 0.95);
+    background: var(--background);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10000;
 }
 
-.login-form {
-    background: var(--gray);
-    padding: 2rem;
-    border-radius: 10px;
+.admin-login-form {
+    background: var(--surface);
+    padding: 3rem;
+    border-radius: 12px;
     border: 2px solid var(--primary);
     text-align: center;
-    min-width: 300px;
+    max-width: 400px;
+    width: 90%;
 }
 
-.login-form h2 {
-    margin-bottom: 1.5rem;
+.admin-login-form h2 {
     color: var(--primary);
-}
-
-.login-form input {
-    width: 100%;
-    padding: 0.75rem;
     margin-bottom: 1rem;
-    background: var(--dark);
-    border: 1px solid #444;
-    border-radius: 4px;
-    color: var(--text);
 }
 
-.login-form button {
-    width: 100%;
-    padding: 0.75rem;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.error {
-    color: #e74c3c;
-    margin-top: 1rem;
+.admin-login-form p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
 }
 
 .admin-header {
-    background: var(--gray);
-    padding: 1rem 0;
+    background: var(--surface);
     border-bottom: 2px solid var(--primary);
+    padding: 1rem 0;
     margin-bottom: 2rem;
 }
 
-.admin-header .container {
+.admin-header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-.admin-tabs {
-    display: flex;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #444;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 1rem 2rem;
-    color: var(--text);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-}
-
-.tab-btn.active {
-    border-bottom-color: var(--primary);
+.admin-header h1 {
     color: var(--primary);
+    font-size: 1.8rem;
 }
 
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.article-form input,
-.article-form textarea,
-.article-form select {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    background: var(--dark);
-    border: 1px solid #444;
-    border-radius: 4px;
-    color: var(--text);
-}
-
-.article-form textarea {
-    height: 300px;
-    resize: vertical;
-}
-
-.form-row {
+.admin-user-info {
     display: flex;
     gap: 1rem;
     align-items: center;
     flex-wrap: wrap;
 }
 
-.form-row select,
-.form-row input {
-    flex: 1;
-    min-width: 200px;
-}
-
-.article-item {
-    background: var(--gray);
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    border: 1px solid #444;
-}
-
-.article-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 1rem;
-}
-
-.article-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.btn-edit, .btn-delete {
+.admin-user-info span {
     padding: 0.5rem 1rem;
-    border: none;
+    background: var(--background);
     border-radius: 4px;
-    cursor: pointer;
+    font-size: 0.9rem;
 }
 
-.btn-edit {
-    background: var(--secondary);
+#admin-user-role {
+    background: var(--primary);
     color: white;
 }
 
-.btn-delete {
+.admin-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+}
+
+.admin-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 0;
+    overflow-x: auto;
+}
+
+.admin-nav-link {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.3s;
+}
+
+.admin-nav-link:hover,
+.admin-nav-link.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: var(--background);
+}
+
+/* Табы */
+.admin-tab {
+    display: none;
+}
+
+.admin-tab.active {
+    display: block;
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.tab-header h2 {
+    color: var(--text);
+    margin: 0;
+}
+
+/* Статистика */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Быстрые действия */
+.admin-actions {
+    margin-bottom: 3rem;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.action-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.action-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.action-text {
+    color: var(--text);
+    font-weight: bold;
+}
+
+/* Списки */
+.articles-controls, .users-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.articles-controls select, 
+.articles-controls input,
+.users-controls select,
+.users-controls input {
+    padding: 0.75rem;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    min-width: 200px;
+}
+
+.articles-list, .users-list, .factions-admin-list, .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.article-item, .user-item, .faction-admin-item, .comment-item {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+}
+
+.article-item:hover, .user-item:hover, .faction-admin-item:hover, .comment-item:hover {
+    border-color: var(--primary);
+}
+
+.article-header, .user-header, .faction-admin-header, .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.article-title, .user-name, .faction-name, .comment-author {
+    font-weight: bold;
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+.article-meta, .user-meta, .faction-meta, .comment-meta {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.article-actions, .user-actions, .faction-actions, .comment-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-warning {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-danger {
     background: #e74c3c;
     color: white;
 }
 
-.secondary {
-    background: #666 !important;
+.article-status, .user-status, .comment-status {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-published {
+    background: #27ae60;
+    color: white;
+}
+
+.status-draft {
+    background: #f39c12;
+    color: white;
+}
+
+.status-moderation {
+    background: #e74c3c;
+    color: white;
+}
+
+.status-active {
+    background: #27ae60;
+    color: white;
+}
+
+.status-inactive {
+    background: #95a5a6;
+    color: white;
+}
+
+/* Модальные окна */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--surface);
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+    color: var(--text);
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--primary);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Формы */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+/* Активность */
+.recent-activity {
+    margin-top: 3rem;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activity-item {
+    background: var(--surface);
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--primary);
+}
+
+.activity-text {
+    color: var(--text);
+    margin-bottom: 0.3rem;
+}
+
+.activity-time {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .admin-header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .admin-nav ul {
+        flex-wrap: wrap;
+    }
+    
+    .tab-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .articles-controls, .users-controls {
+        flex-direction: column;
+    }
+    
+    .articles-controls select, 
+    .articles-controls input,
+    .users-controls select,
+    .users-controls input {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .article-header, .user-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .article-actions, .user-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
 }
