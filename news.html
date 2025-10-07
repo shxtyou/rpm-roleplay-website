@@ -3,113 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новости - RPM Roleplay</title>
+    <title>Все новости - RPM Gazette</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="dark-theme">
-    <header class="header">
+    <header class="newspaper-header">
         <div class="container">
-            <div class="logo">
-                <h1>RPM ROLEPLAY</h1>
-                <p>Погрузись в Minecraft Role Play по сети!</p>
+            <div class="header-top">
+                <div class="header-info">
+                    <span class="date" id="current-date"></span>
+                    <span class="weather" id="current-weather">Штат RPM: +22°C</span>
+                </div>
+                <div class="header-actions">
+                    <a href="admin.html" class="admin-link">Редакция</a>
+                    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+                </div>
             </div>
-            <nav class="navbar">
+            
+            <div class="header-main">
+                <h1 class="newspaper-title">RPM GAZETTE</h1>
+                <p class="newspaper-slogan">Официальное издание штата | Ежедневные новости</p>
+            </div>
+            
+            <nav class="newspaper-nav">
                 <ul>
                     <li><a href="index.html">Главная</a></li>
-                    <li><a href="news.html">Новости</a></li>
-                    <li><a href="rules.html">Правила</a></li>
-                    <li><a href="guides.html">Гайды</a></li>
-                    <li><a href="about.html">О сервере</a></li>
+                    <li><a href="news.html" class="active">Все новости</a></li>
+                    <li><a href="categories.html">Рубрики</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="contact.html">Контакты</a></li>
                 </ul>
             </nav>
-            <div class="server-info">
-                <div class="ip-address">
-                    <strong>IP:</strong> MC.RPMSERVER.RU
-                </div>
-                <div class="online">
-                    <strong>Онлайн:</strong> <span id="online-count">127</span> игроков
-                </div>
-            </div>
         </div>
     </header>
 
     <main class="container">
-        <h1>Все новости сервера</h1>
-        
-        <div class="news-archive">
-            <article class="news-card">
-                <div class="news-category">Обновление</div>
-                <h3><a href="#">Обновление 1.5 - Новая система бизнеса</a></h3>
-                <p class="news-meta">15 ноября 2024 • Администрация</p>
-                <p>Добавлена возможность открывать собственный бизнес, нанимать сотрудников и развивать экономику города. Теперь каждый игрок может стать предпринимателем!</p>
-            </article>
+        <div class="page-header">
+            <h1>Все новости штата RPM</h1>
+            <p>Актуальные события и происшествия в нашем штате</p>
+        </div>
 
-            <article class="news-card">
-                <div class="news-category">Событие</div>
-                <h3><a href="#">Выборы мэра Лос-Сантоса</a></h3>
-                <p class="news-meta">14 ноября 2024 • Ивенты</p>
-                <p>На этой неделе начинаются выборы мэра города. Успей подать заявку на кандидата или определись со своим выбором. Голосование продлится до конца недели.</p>
-            </article>
+        <div class="news-archive">
+            <div class="archive-filters">
+                <select id="category-filter">
+                    <option value="all">Все категории</option>
+                    <option value="politics">Политика</option>
+                    <option value="economy">Экономика</option>
+                    <option value="society">Общество</option>
+                    <option value="crime">Криминал</option>
+                    <option value="culture">Культура</option>
+                    <option value="sports">Спорт</option>
+                </select>
+                
+                <select id="sort-filter">
+                    <option value="newest">Сначала новые</option>
+                    <option value="oldest">Сначала старые</option>
+                </select>
+            </div>
+
+            <div class="archive-list" id="archive-list">
+                <!-- Статьи будут загружаться через JavaScript -->
+                <div class="no-articles">
+                    <h3>Пока нет опубликованных новостей</h3>
+                    <p>Статьи появятся здесь после публикации через админ-панель</p>
+                    <a href="admin.html" class="btn btn-primary">Добавить первую новость</a>
+                </div>
+            </div>
+
+            <div class="pagination" id="pagination" style="display: none;">
+                <button class="pagination-btn" id="prev-btn">← Назад</button>
+                <span class="page-info">Страница <span id="current-page">1</span></span>
+                <button class="pagination-btn" id="next-btn">Вперед →</button>
+            </div>
         </div>
     </main>
 
-    <footer class="footer">
+    <footer class="newspaper-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>RPM Roleplay</h4>
-                    <p>Лучший ролеплей сервер в Minecraft</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">VK</a>
-                        <a href="#" class="social-link">Discord</a>
-                        <a href="#" class="social-link">YouTube</a>
-                    </div>
+                    <h4>RPM Gazette</h4>
+                    <p>Официальное издание штата</p>
+                    <p>Основано в 2024 году</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Сервер</h4>
-                    <a href="about.html">О проекте</a>
-                    <a href="rules.html">Правила</a>
-                    <a href="staff.html">Команда</a>
+                    <h4>Рубрики</h4>
+                    <a href="news.html?category=politics">Политика</a>
+                    <a href="news.html?category=economy">Экономика</a>
+                    <a href="news.html?category=crime">Криминал</a>
+                    <a href="news.html?category=society">Общество</a>
                 </div>
                 <div class="footer-section">
-                    <h4>Помощь</h4>
-                    <a href="guides.html">Гайды</a>
-                    <a href="faq.html">FAQ</a>
-                    <a href="support.html">Поддержка</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Подключиться</h4>
-                    <div class="server-ip">MC.RPMSERVER.RU</div>
-                    <p>Версия: 1.19.2-1.20.1</p>
+                    <h4>Редакция</h4>
+                    <a href="about.html">О нас</a>
+                    <a href="contact.html">Контакты</a>
+                    <a href="admin.html">Для журналистов</a>
                 </div>
             </div>
-            
-            <div class="info-notice">
-                <div class="info-content">
-                    <h4>ℹ️ Обращаем внимание</h4>
-                    <p>Данный сайт создан для удобства игроков и является <strong>неофициальным фанатским ресурсом</strong> сервера RPM Roleplay. Здесь вы найдете актуальные новости, гайды и полезную информацию для более комфортной игры в нашем ролевом проекте.</p>
-                    
-                    <div class="original-links">
-                        <p><strong>Официальные ресурсы:</strong></p>
-                        <a href="https://rpmserver.com/roleplay" target="_blank" class="original-link">
-                            🌐 Официальный сайт RPM Roleplay
-                        </a>
-                        <a href="https://mc.rpmserver.ru" target="_blank" class="original-link">
-                            🎮 Прямое подключение к серверу
-                        </a>
-                    </div>
-                    
-                    <p class="final-note">Присоединяйтесь к нашему сообществу и создавайте уникальные истории вместе с нами! 🚀</p>
-                </div>
-            </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2024 RPM Roleplay. Все права защищены. | Фанатский сайт создан с ❤️ для сообщества</p>
+                <p>&copy; 2024 RPM Gazette. Все права защищены.</p>
             </div>
         </div>
     </footer>
 
-    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
-    <script src="js/script.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/articles.js"></script>
+    <script src="js/news-archive.js"></script>
 </body>
 </html>
