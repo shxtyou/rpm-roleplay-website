@@ -3,259 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPM Gazette - Ежедневные новости штата RPM</title>
+    <title>RPM Gazette - Официальное издание штата</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="dark-theme">
-    <!-- Шапка газеты -->
     <header class="newspaper-header">
         <div class="container">
             <div class="header-top">
                 <div class="header-info">
-                    <span class="date" id="current-date">Понедельник, 18 ноября 2024</span>
-                    <span class="weather">Штат RPM: +22°C, солнечно</span>
-                    <span class="currency">$: 95.50₽ | €: 102.30₽</span>
+                    <span class="date" id="current-date"></span>
+                    <span class="weather" id="current-weather">Штат RPM: +22°C</span>
                 </div>
                 <div class="header-actions">
-                    <button class="subscribe-btn">Подписаться</button>
-                    <button class="theme-toggle" onclick="toggleTheme()">☀️ Светлая тема</button>
+                    <a href="admin.html" class="admin-link">Редакция</a>
+                    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
                 </div>
             </div>
             
             <div class="header-main">
                 <h1 class="newspaper-title">RPM GAZETTE</h1>
-                <p class="newspaper-slogan">Официальное издание штата RPM | Ежедневные новости и аналитика</p>
+                <p class="newspaper-slogan">Официальное издание штата | Ежедневные новости</p>
             </div>
             
             <nav class="newspaper-nav">
                 <ul>
                     <li><a href="index.html" class="active">Главная</a></li>
-                    <li><a href="politics.html">Политика штата</a></li>
-                    <li><a href="economy.html">Экономика</a></li>
-                    <li><a href="crime.html">Правоохранительные органы</a></li>
-                    <li><a href="society.html">Общество</a></li>
-                    <li><a href="business.html">Бизнес</a></li>
-                    <li><a href="transport.html">Транспорт</a></li>
+                    <li><a href="news.html">Все новости</a></li>
+                    <li><a href="categories.html">Рубрики</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="contact.html">Контакты</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Экстренные новости -->
-    <section class="breaking-news">
+    <section class="breaking-news" id="breaking-news" style="display: none;">
         <div class="container">
             <div class="breaking-tag">СРОЧНО</div>
             <div class="breaking-content">
-                <h2>ЗАГОЛОВОК ЭКСТРЕННОЙ НОВОСТИ ШТАТА RPM</h2>
-                <span class="breaking-time">14:32 | Обновлено 2 минуты назад</span>
+                <h2 id="breaking-title">Заголовок экстренной новости</h2>
+                <span class="breaking-time" id="breaking-time"></span>
             </div>
         </div>
     </section>
 
-    <!-- Основной контент -->
     <main class="container">
         <div class="content-grid">
-            <!-- Главная колонка -->
             <div class="main-column">
-                <!-- Крупный главный материал -->
-                <article class="lead-article">
-                    <div class="article-category">ПОЛИТИКА ШТАТА RPM</div>
-                    <h1 class="lead-title">ЗАГОЛОВОК ГЛАВНОЙ НОВОСТИ ШТАТА RPM</h1>
-                    <p class="lead-excerpt">Краткое описание главной новости штата будет размещено здесь. Это основной материал сегодняшнего выпуска.</p>
-                    <div class="article-meta">
-                        <span class="author">Редакция RPM Gazette</span>
-                        <span class="time">Сегодня, 12:45</span>
-                    </div>
-                </article>
+                <div id="featured-article" class="lead-article">
+                    <!-- Ведущая статья загрузится через JS -->
+                </div>
 
-                <!-- Блок важных новостей -->
                 <section class="important-news">
-                    <h2 class="section-title">Важные события штата</h2>
-                    <div class="news-list">
-                        <article class="news-item">
-                            <div class="news-category">ЭКОНОМИКА</div>
-                            <h3>НОВОСТЬ ОБ ЭКОНОМИКЕ ШТАТА RPM</h3>
-                            <p>Краткое описание экономической новости штата RPM...</p>
-                            <div class="article-meta">
-                                <span class="time">Сегодня, 11:20</span>
-                            </div>
-                        </article>
-
-                        <article class="news-item">
-                            <div class="news-category">ОБЩЕСТВО</div>
-                            <h3>СОБЫТИЕ В ЖИЗНИ ОБЩЕСТВА ШТАТА RPM</h3>
-                            <p>Описание общественной новости штата RPM...</p>
-                            <div class="article-meta">
-                                <span class="time">Сегодня, 10:15</span>
-                            </div>
-                        </article>
-
-                        <article class="news-item">
-                            <div class="news-category">ТРАНСПОРТ</div>
-                            <h3>НОВОСТИ ТРАНСПОРТНОЙ СИСТЕМЫ RPM</h3>
-                            <p>Информация о транспорте в штате RPM...</p>
-                            <div class="article-meta">
-                                <span class="time">Сегодня, 09:30</span>
-                            </div>
-                        </article>
+                    <h2 class="section-title">Последние новости</h2>
+                    <div class="news-list" id="latest-articles">
+                        <!-- Статьи загрузятся через JS -->
                     </div>
                 </section>
             </div>
 
-            <!-- Боковая колонка -->
             <aside class="sidebar">
-                <!-- Быстрые новости -->
                 <section class="quick-news">
                     <h3>Коротко о главном</h3>
-                    <div class="quick-list">
-                        <div class="quick-item">
-                            <span class="quick-time">13:45</span>
-                            <span class="quick-text">Краткая новость штата RPM</span>
-                        </div>
-                        <div class="quick-item">
-                            <span class="quick-time">13:20</span>
-                            <span class="quick-text">Еще одна краткая новость</span>
-                        </div>
-                        <div class="quick-item">
-                            <span class="quick-time">12:55</span>
-                            <span class="quick-text">Важное сообщение из штата</span>
-                        </div>
-                        <div class="quick-item">
-                            <span class="quick-time">12:30</span>
-                            <span class="quick-text">Обновление ситуации в RPM</span>
-                        </div>
+                    <div class="quick-list" id="quick-news">
+                        <!-- Быстрые новости -->
                     </div>
                 </section>
 
-                <!-- Погода в штате -->
                 <section class="weather-widget">
-                    <h3>Погода в штате RPM</h3>
+                    <h3>Погода в штате</h3>
                     <div class="weather-info">
                         <div class="weather-main">
                             <span class="weather-temp">+22°C</span>
                             <span class="weather-desc">Солнечно</span>
                         </div>
-                        <div class="weather-details">
-                            <div>Влажность: 65%</div>
-                            <div>Ветер: 3 м/с</div>
-                            <div>Давление: 760 мм</div>
-                        </div>
                     </div>
                 </section>
 
-                <!-- Курсы валют -->
-                <section class="currency-widget">
-                    <h3>Курсы валют</h3>
-                    <div class="currency-rates">
-                        <div class="currency-item">
-                            <span class="currency-name">USD/RUB</span>
-                            <span class="currency-rate">95.50</span>
-                        </div>
-                        <div class="currency-item">
-                            <span class="currency-name">EUR/RUB</span>
-                            <span class="currency-rate">102.30</span>
-                        </div>
-                        <div class="currency-item">
-                            <span class="currency-name">CNY/RUB</span>
-                            <span class="currency-rate">13.20</span>
-                        </div>
+                <section class="most-read">
+                    <h3>Самое читаемое</h3>
+                    <div class="most-read-list" id="most-read">
+                        <!-- Популярные статьи -->
                     </div>
                 </section>
             </aside>
         </div>
 
-        <!-- Дополнительные разделы -->
         <section class="news-sections">
-            <div class="section-row">
-                <!-- Политика штата -->
-                <div class="section-block">
-                    <h2 class="section-title">Политика штата RPM</h2>
-                    <article class="section-article">
-                        <h3>ПОЛИТИЧЕСКАЯ НОВОСТЬ ШТАТА RPM</h3>
-                        <p>Описание политических событий в штате RPM...</p>
-                    </article>
-                    <article class="section-article">
-                        <h3>ЗАКОНОДАТЕЛЬНЫЕ ИЗМЕНЕНИЯ В RPM</h3>
-                        <p>Информация о новых законах штата...</p>
-                    </article>
-                </div>
-
-                <!-- Экономика -->
-                <div class="section-block">
-                    <h2 class="section-title">Экономика штата</h2>
-                    <article class="section-article">
-                        <h3>ЭКОНОМИЧЕСКИЕ ПОКАЗАТЕЛИ RPM</h3>
-                        <p>Данные об экономике штата RPM...</p>
-                    </article>
-                    <article class="section-article">
-                        <h3>БИЗНЕС-НОВОСТИ ШТАТА</h3>
-                        <p>События в деловой жизни RPM...</p>
-                    </article>
-                </div>
-            </div>
-
-            <div class="section-row">
-                <!-- Правоохранительные органы -->
-                <div class="section-block">
-                    <h2 class="section-title">Правоохранительные органы</h2>
-                    <article class="section-article">
-                        <h3>ОТЧЕТ ПОЛИЦИИ ШТАТА RPM</h3>
-                        <p>Оперативная информация от полиции...</p>
-                    </article>
-                    <article class="section-article">
-                        <h3>БЕЗОПАСНОСТЬ В ШТАТЕ</h3>
-                        <p>Меры по обеспечению безопасности...</p>
-                    </article>
-                </div>
-
-                <!-- Общество -->
-                <div class="section-block">
-                    <h2 class="section-title">Общество штата RPM</h2>
-                    <article class="section-article">
-                        <h3>ОБЩЕСТВЕННЫЕ СОБЫТИЯ</h3>
-                        <p>Новости из жизни общества штата...</p>
-                    </article>
-                    <article class="section-article">
-                        <h3>СОЦИАЛЬНЫЕ ПРОЕКТЫ</h3>
-                        <p>Развитие социальной сферы в RPM...</p>
-                    </article>
-                </div>
+            <div class="section-row" id="categories-grid">
+                <!-- Категории загрузятся через JS -->
             </div>
         </section>
     </main>
 
-    <!-- Подвал -->
     <footer class="newspaper-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>RPM Gazette</h4>
-                    <p>Официальное издание штата RPM</p>
-                    <p>Ежедневные новости и аналитика</p>
+                    <p>Официальное издание штата</p>
+                    <p>Основано в 2024 году</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Разделы</h4>
-                    <a href="politics.html">Политика штата</a>
-                    <a href="economy.html">Экономика</a>
-                    <a href="crime.html">Правоохранительные органы</a>
-                    <a href="society.html">Общество</a>
+                    <h4>Рубрики</h4>
+                    <div id="footer-categories">
+                        <!-- Категории -->
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h4>Редакция</h4>
                     <a href="about.html">О нас</a>
                     <a href="contact.html">Контакты</a>
-                    <a href="advert.html">Реклама</a>
-                    <a href="vacancies.html">Вакансии</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Подписка</h4>
-                    <p>Будьте в курсе событий штата RPM</p>
-                    <button class="subscribe-btn">Подписаться на новости</button>
+                    <a href="admin.html">Для журналистов</a>
                 </div>
             </div>
-            
             <div class="footer-bottom">
                 <p>&copy; 2024 RPM Gazette. Все права защищены.</p>
-                <p>Любое использование материалов допускается только с письменного согласия редакции.</p>
-                <div class="footer-notice">
-                    <p><strong>Обращаем внимание:</strong> Данное издание является частью ролевого проекта RPM и создано для immers
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/articles.js"></script>
+</body>
+</html>
