@@ -3,82 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель редактора - RPM Gazette</title>
+    <title>Панель управления - RPM SMI</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="dark-theme">
-    <div id="login-screen">
-        <div class="login-form">
-            <h2>Вход в редакцию</h2>
-            <input type="password" id="admin-password" placeholder="Пароль редакции">
-            <button onclick="login()">Войти</button>
-            <p id="login-error" class="error"></p>
+    <div id="admin-auth" style="display: none;">
+        <div class="admin-login-form">
+            <h2>Доступ к панели управления</h2>
+            <p>Требуются права редактора или выше</p>
+            <button onclick="window.location.href='login.html'" class="btn btn-primary">Перейти к авторизации</button>
         </div>
     </div>
 
-    <div id="admin-panel" style="display: none;">
+    <div id="admin-panel">
         <header class="admin-header">
             <div class="container">
-                <h1>Редакция RPM Gazette</h1>
-                <button onclick="logout()">Выйти</button>
+                <div class="admin-header-content">
+                    <h1>Панель управления RPM SMI</h1>
+                    <div class="admin-user-info">
+                        <span id="admin-user-name"></span>
+                        <span id="admin-user-role"></span>
+                        <button onclick="logout()" class="btn btn-secondary">Выйти</button>
+                    </div>
+                </div>
             </div>
         </header>
 
+        <nav class="admin-nav">
+            <div class="container">
+                <ul>
+                    <li><a href="#dashboard" class="admin-nav-link active" data-tab="dashboard">Дашборд</a></li>
+                    <li><a href="#articles" class="admin-nav-link" data-tab="articles">Статьи</a></li>
+                    <li><a href="#users" class="admin-nav-link" data-tab="users">Пользователи</a></li>
+                    <li><a href="#factions" class="admin-nav-link" data-tab="factions">Фракции</a></li>
+                    <li><a href="#comments" class="admin-nav-link" data-tab="comments">Комментарии</a></li>
+                    <li><a href="#settings" class="admin-nav-link" data-tab="settings" id="settings-tab" style="display: none;">Настройки</a></li>
+                </ul>
+            </div>
+        </nav>
+
         <main class="container">
-            <div class="admin-tabs">
-                <button class="tab-btn active" onclick="openTab('write-tab')">Написать статью</button>
-                <button class="tab-btn" onclick="openTab('manage-tab')">Управление статьями</button>
-                <button class="tab-btn" onclick="openTab('breaking-tab')">Экстренные новости</button>
-            </div>
-
-            <div id="write-tab" class="tab-content active">
-                <h2>Новая статья</h2>
-                <div class="article-form">
-                    <input type="text" id="article-title" placeholder="Заголовок статьи">
-                    <textarea id="article-content" placeholder="Текст статьи..."></textarea>
-                    
-                    <div class="form-row">
-                        <select id="article-category">
-                            <option value="politics">Политика</option>
-                            <option value="economy">Экономика</option>
-                            <option value="society">Общество</option>
-                            <option value="crime">Криминал</option>
-                            <option value="culture">Культура</option>
-                            <option value="sports">Спорт</option>
-                        </select>
-                        
-                        <input type="text" id="article-author" placeholder="Автор">
-                        
-                        <label>
-                            <input type="checkbox" id="article-breaking"> Экстренная новость
-                        </label>
+            <!-- Дашборд -->
+            <div id="dashboard" class="admin-tab active">
+                <h2>Общая статистика</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="total-articles">0</div>
+                            <div class="stat-label">Всего статей</div>
+                        </div>
                     </div>
-                    
-                    <button onclick="publishArticle()">Опубликовать</button>
-                    <button onclick="saveDraft()" class="secondary">Сохранить черновик</button>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="total-users">0</div>
+                            <div class="stat-label">Пользователей</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="total-comments">0</div>
+                            <div class="stat-label">Комментариев</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎮</div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="online-players">0</div>
+                            <div class="stat-label">Онлайн игроков</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-actions">
+                    <h3>Быстрые действия</h3>
+                    <div class="actions-grid">
+                        <button onclick="openTab('articles')" class="action-btn">
+                            <div class="action-icon">📝</div>
+                            <div class="action-text">Новая статья</div>
+                        </button>
+                        <button onclick="openTab('users')" class="action-btn">
+                            <div class="action-icon">👤</div>
+                            <div class="action-text">Управление пользователями</div>
+                        </button>
+                        <button onclick="openTab('factions')" class="action-btn">
+                            <div class="action-icon">🏛️</div>
+                            <div class="action-text">Редактировать фракции</div>
+                        </button>
+                        <button onclick="openTab('comments')" class="action-btn">
+                            <div class="action-icon">💬</div>
+                            <div class="action-text">Модерация комментариев</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Последняя активность</h3>
+                    <div class="activity-list" id="recent-activity">
+                        <!-- Активность загрузится через JS -->
+                    </div>
                 </div>
             </div>
 
-            <div id="manage-tab" class="tab-content">
-                <h2>Мои статьи</h2>
-                <div class="articles-list" id="articles-list">
-                    <!-- Список статей -->
+            <!-- Управление статьями -->
+            <div id="articles" class="admin-tab">
+                <div class="tab-header">
+                    <h2>Управление статьями</h2>
+                    <button onclick="showArticleForm()" class="btn btn-primary">+ Новая статья</button>
+                </div>
+
+                <div class="articles-controls">
+                    <select id="articles-filter" onchange="filterArticles()">
+                        <option value="all">Все статьи</option>
+                        <option value="published">Опубликованные</option>
+                        <option value="draft">Черновики</option>
+                        <option value="moderation">На модерации</option>
+                    </select>
+                    <input type="text" id="articles-search" placeholder="Поиск статей..." onkeyup="searchArticles()">
+                </div>
+
+                <div class="articles-list" id="admin-articles-list">
+                    <!-- Статьи загрузятся через JS -->
+                </div>
+
+                <!-- Форма создания/редактирования статьи -->
+                <div id="article-form-modal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="article-form-title">Новая статья</h3>
+                            <button onclick="closeArticleForm()" class="modal-close">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="article-form">
+                                <div class="form-group">
+                                    <label for="article-title">Заголовок</label>
+                                    <input type="text" id="article-title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="article-content">Содержание</label>
+                                    <textarea id="article-content" rows="10" required></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="article-category">Категория</label>
+                                        <select id="article-category" required>
+                                            <option value="politics">Политика</option>
+                                            <option value="crime">Криминал</option>
+                                            <option value="society">Общество</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="article-faction">Фракция</label>
+                                        <select id="article-faction">
+                                            <option value="">Общая новость</option>
+                                            <!-- Фракции загрузятся через JS -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="article-tags">Теги (через запятую)</label>
+                                        <input type="text" id="article-tags" placeholder="новости, события, rpm">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="article-breaking"> 
+                                            Экстренная новость
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="article-publish" checked>
+                                            Опубликовать сразу
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" onclick="saveArticle()" class="btn btn-primary">Сохранить статью</button>
+                                    <button type="button" onclick="closeArticleForm()" class="btn btn-secondary">Отмена</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="breaking-tab" class="tab-content">
-                <h2>Экстренная новость</h2>
-                <div class="breaking-form">
-                    <input type="text" id="breaking-title" placeholder="Заголовок экстренной новости">
-                    <button onclick="setBreakingNews()">Установить как экстренную</button>
-                    <button onclick="clearBreakingNews()" class="secondary">Убрать экстренную новость</button>
+            <!-- Управление пользователями -->
+            <div id="users" class="admin-tab">
+                <div class="tab-header">
+                    <h2>Управление пользователями</h2>
+                    <button onclick="showUserForm()" class="btn btn-primary" id="add-user-btn" style="display: none;">+ Добавить пользователя</button>
+                </div>
+
+                <div class="users-list" id="admin-users-list">
+                    <!-- Пользователи загрузятся через JS -->
+                </div>
+            </div>
+
+            <!-- Управление фракциями -->
+            <div id="factions" class="admin-tab">
+                <h2>Управление фракциями</h2>
+                <div class="factions-admin-list" id="admin-factions-list">
+                    <!-- Фракции загрузятся через JS -->
+                </div>
+            </div>
+
+            <!-- Модерация комментариев -->
+            <div id="comments" class="admin-tab">
+                <h2>Модерация комментариев</h2>
+                <div class="comments-list" id="admin-comments-list">
+                    <!-- Комментарии загрузятся через JS -->
+                </div>
+            </div>
+
+            <!-- Настройки (только для главного редактора) -->
+            <div id="settings" class="admin-tab">
+                <h2>Настройки системы</h2>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label for="site-title">Название сайта</label>
+                        <input type="text" id="site-title" value="RPM SMI">
+                    </div>
+                    <div class="form-group">
+                        <label for="site-description">Описание сайта</label>
+                        <textarea id="site-description">Официальные новости штата | Средства Массовой Информации</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="default-theme">Тема по умолчанию</label>
+                        <select id="default-theme">
+                            <option value="dark">Тёмная</option>
+                            <option value="light">Светлая</option>
+                        </select>
+                    </div>
+                    <button onclick="saveSettings()" class="btn btn-primary">Сохранить настройки</button>
                 </div>
             </div>
         </main>
     </div>
 
+    <script src="js/auth.js"></script>
     <script src="js/admin.js"></script>
     <script src="js/articles.js"></script>
+    <script src="js/stats.js"></script>
 </body>
 </html>
