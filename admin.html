@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель редактора - RPM Gazette</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="dark-theme">
+    <div id="login-screen">
+        <div class="login-form">
+            <h2>Вход в редакцию</h2>
+            <input type="password" id="admin-password" placeholder="Пароль редакции">
+            <button onclick="login()">Войти</button>
+            <p id="login-error" class="error"></p>
+        </div>
+    </div>
+
+    <div id="admin-panel" style="display: none;">
+        <header class="admin-header">
+            <div class="container">
+                <h1>Редакция RPM Gazette</h1>
+                <button onclick="logout()">Выйти</button>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="openTab('write-tab')">Написать статью</button>
+                <button class="tab-btn" onclick="openTab('manage-tab')">Управление статьями</button>
+                <button class="tab-btn" onclick="openTab('breaking-tab')">Экстренные новости</button>
+            </div>
+
+            <div id="write-tab" class="tab-content active">
+                <h2>Новая статья</h2>
+                <div class="article-form">
+                    <input type="text" id="article-title" placeholder="Заголовок статьи">
+                    <textarea id="article-content" placeholder="Текст статьи..."></textarea>
+                    
+                    <div class="form-row">
+                        <select id="article-category">
+                            <option value="politics">Политика</option>
+                            <option value="economy">Экономика</option>
+                            <option value="society">Общество</option>
+                            <option value="crime">Криминал</option>
+                            <option value="culture">Культура</option>
+                            <option value="sports">Спорт</option>
+                        </select>
+                        
+                        <input type="text" id="article-author" placeholder="Автор">
+                        
+                        <label>
+                            <input type="checkbox" id="article-breaking"> Экстренная новость
+                        </label>
+                    </div>
+                    
+                    <button onclick="publishArticle()">Опубликовать</button>
+                    <button onclick="saveDraft()" class="secondary">Сохранить черновик</button>
+                </div>
+            </div>
+
+            <div id="manage-tab" class="tab-content">
+                <h2>Мои статьи</h2>
+                <div class="articles-list" id="articles-list">
+                    <!-- Список статей -->
+                </div>
+            </div>
+
+            <div id="breaking-tab" class="tab-content">
+                <h2>Экстренная новость</h2>
+                <div class="breaking-form">
+                    <input type="text" id="breaking-title" placeholder="Заголовок экстренной новости">
+                    <button onclick="setBreakingNews()">Установить как экстренную</button>
+                    <button onclick="clearBreakingNews()" class="secondary">Убрать экстренную новость</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script src="js/articles.js"></script>
+</body>
+</html>
