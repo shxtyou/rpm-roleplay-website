@@ -5,7 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход в систему - RPM SMI</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/auth.css">
+    <style>
+        /* From Uiverse.io by ammarsaa */
+        .auth-form-ui {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            background-color: #1a1a1a;
+            color: #fff;
+            border: 1px solid #333;
+            margin: 2rem auto;
+        }
+
+        .auth-title {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding-left: 30px;
+            color: #00bfff;
+            margin-bottom: 10px;
+        }
+
+        .auth-title::before {
+            width: 18px;
+            height: 18px;
+        }
+
+        .auth-title::after {
+            width: 18px;
+            height: 18px;
+            animation: pulse 1s linear infinite;
+        }
+
+        .auth-title::before,
+        .auth-title::after {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            left: 0px;
+            background-color: #00bfff;
+        }
+
+        .auth-message {
+            font-size: 14.5px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline royalblue;
+        }
+
+        .auth-switch a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .auth-flex {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .auth-form-ui label {
+            position: relative;
+            width: 100%;
+        }
+
+        .auth-form-ui label .auth-input {
+            background-color: #333;
+            color: #fff;
+            width: 100%;
+            padding: 20px 10px 10px 10px;
+            outline: 0;
+            border: 1px solid rgba(105, 105, 105, 0.397);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .auth-form-ui label .auth-input:focus {
+            border-color: #00bfff;
+        }
+
+        .auth-form-ui label .auth-input + span {
+            color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            left: 10px;
+            top: 0px;
+            font-size: 0.9em;
+            cursor: text;
+            transition: 0.3s ease;
+            pointer-events: none;
+        }
+
+        .auth-form-ui label .auth-input:placeholder-shown + span {
+            top: 12.5px;
+            font-size: 0.9em;
+        }
+
+        .auth-form-ui label .auth-input:focus + span,
+        .auth-form-ui label .auth-input:valid + span {
+            color: #00bfff;
+            top: 0px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+
+        .auth-submit {
+            border: none;
+            outline: none;
+            padding: 12px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            background-color: #00bfff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .auth-submit:hover {
+            background-color: #00bfff96;
+        }
+
+        .auth-submit:active {
+            transform: scale(0.98);
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(0.9);
+                opacity: 1;
+            }
+            to {
+                transform: scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        .auth-container {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+    </style>
 </head>
 <body class="dark-theme">
     <header class="newspaper-header">
@@ -32,85 +214,63 @@
 
     <main class="container">
         <div class="auth-container">
-            <div class="auth-tabs">
-                <button class="auth-tab active" onclick="openAuthTab('login')">Вход</button>
-                <button class="auth-tab" onclick="openAuthTab('register')">Регистрация</button>
-            </div>
-
             <!-- Форма входа -->
-            <div id="login-form" class="auth-form active">
-                <h2>Вход в систему</h2>
-                <p class="auth-description">Войдите в свою учетную запись редакции</p>
+            <form class="auth-form-ui" id="login-form" style="display: block;">
+                <p class="auth-title">Вход</p>
+                <p class="auth-message">Войдите в свою учетную запись редакции</p>
                 
-                <div class="form-group">
-                    <label for="login-email">Email или логин</label>
-                    <input type="text" id="login-email" placeholder="Введите email или логин">
-                </div>
+                <label>
+                    <input class="auth-input" type="text" id="login-email" required>
+                    <span>Email или логин</span>
+                </label>
 
-                <div class="form-group">
-                    <label for="login-password">Пароль</label>
-                    <input type="password" id="login-password" placeholder="Введите пароль">
-                </div>
+                <label>
+                    <input class="auth-input" type="password" id="login-password" required>
+                    <span>Пароль</span>
+                </label>
 
-                <button onclick="attemptLogin()" class="btn btn-primary btn-full">Войти в систему</button>
+                <button type="button" class="auth-submit" onclick="attemptLogin()">Войти в систему</button>
                 
-                <div id="login-message" class="auth-message"></div>
+                <div id="login-message" class="error-message"></div>
 
-                <div class="auth-links">
-                    <p>Демо доступы:</p>
-                    <div class="demo-accounts">
-                        <div class="demo-account" onclick="fillDemoAccount('admin')">
-                            <strong>Главный редактор</strong><br>
-                            admin / admin2024
-                        </div>
-                        <div class="demo-account" onclick="fillDemoAccount('editor')">
-                            <strong>Редактор</strong><br>
-                            editor / editor2024
-                        </div>
-                        <div class="demo-account" onclick="fillDemoAccount('journalist')">
-                            <strong>Журналист</strong><br>
-                            journalist / journalist2024
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <p class="auth-switch">Нет аккаунта? <a href="#" onclick="showRegisterForm()">Зарегистрироваться</a></p>
+            </form>
 
             <!-- Форма регистрации -->
-            <div id="register-form" class="auth-form">
-                <h2>Регистрация</h2>
-                <p class="auth-description">Создайте учетную запись журналиста</p>
+            <form class="auth-form-ui" id="register-form" style="display: none;">
+                <p class="auth-title">Регистрация</p>
+                <p class="auth-message">Создайте учетную запись журналиста</p>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="reg-username">Логин</label>
-                        <input type="text" id="reg-username" placeholder="Придумайте логин">
-                    </div>
-                    <div class="form-group">
-                        <label for="reg-displayname">Отображаемое имя</label>
-                        <input type="text" id="reg-displayname" placeholder="Как вас будут видеть читатели">
-                    </div>
-                </div>
+                <div class="auth-flex">
+                    <label>
+                        <input class="auth-input" type="text" id="reg-username" required>
+                        <span>Логин</span>
+                    </label>
 
-                <div class="form-group">
-                    <label for="reg-email">Email</label>
-                    <input type="email" id="reg-email" placeholder="Введите ваш email">
-                </div>
+                    <label>
+                        <input class="auth-input" type="text" id="reg-displayname" required>
+                        <span>Имя для отображения</span>
+                    </label>
+                </div>  
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="reg-password">Пароль</label>
-                        <input type="password" id="reg-password" placeholder="Придумайте пароль">
-                    </div>
-                    <div class="form-group">
-                        <label for="reg-password2">Подтверждение пароля</label>
-                        <input type="password" id="reg-password2" placeholder="Повторите пароль">
-                    </div>
-                </div>
+                <label>
+                    <input class="auth-input" type="email" id="reg-email" required>
+                    <span>Email</span>
+                </label> 
+                    
+                <label>
+                    <input class="auth-input" type="password" id="reg-password" required>
+                    <span>Пароль</span>
+                </label>
 
-                <div class="form-group">
-                    <label for="reg-faction">Фракция (опционально)</label>
-                    <select id="reg-faction">
-                        <option value="">Не указана</option>
+                <label>
+                    <input class="auth-input" type="password" id="reg-password2" required>
+                    <span>Подтверждение пароля</span>
+                </label>
+
+                <label>
+                    <select class="auth-input" id="reg-faction" style="padding: 20px 10px 10px 10px; height: 52px;">
+                        <option value="">Выберите фракцию</option>
                         <option value="Мэрия">Мэрия</option>
                         <option value="СМИ">СМИ</option>
                         <option value="ЦПД">ЦПД</option>
@@ -121,16 +281,15 @@
                         <option value="Southside Serpents">Southside Serpents</option>
                         <option value="Русская мафия">Русская мафия</option>
                     </select>
-                </div>
+                    <span>Фракция (опционально)</span>
+                </label>
 
-                <button onclick="attemptRegister()" class="btn btn-primary btn-full">Зарегистрироваться</button>
+                <button type="button" class="auth-submit" onclick="attemptRegister()">Зарегистрироваться</button>
                 
-                <div id="register-message" class="auth-message"></div>
+                <div id="register-message" class="error-message"></div>
 
-                <div class="auth-notice">
-                    <p>После регистрации ваш аккаунт будет ожидать активации редактором.</p>
-                </div>
-            </div>
+                <p class="auth-switch">Уже есть аккаунт? <a href="#" onclick="showLoginForm()">Войти</a></p>
+            </form>
         </div>
     </main>
 
@@ -142,9 +301,8 @@
                     <p>Официальные новости штата</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Помощь</h4>
-                    <a href="contact.html">Техническая поддержка</a>
-                    <a href="about.html">О редакции</a>
+                    <h4>Редакция</h4>
+                    <a href="login.html">Вход для сотрудников</a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -153,28 +311,27 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // Функции для страницы входа
-        function openAuthTab(tabName) {
-            // Скрываем все формы
-            document.querySelectorAll('.auth-form').forEach(form => {
-                form.classList.remove('active');
-            });
-            
-            // Убираем активный класс у всех кнопок
-            document.querySelectorAll('.auth-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Показываем выбранную форму
-            document.getElementById(tabName + '-form').classList.add('active');
-            
-            // Активируем кнопку
-            event.target.classList.add('active');
+        // Переключение между формами
+        function showLoginForm() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+            clearMessages();
         }
 
+        function showRegisterForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+            clearMessages();
+        }
+
+        function clearMessages() {
+            document.getElementById('login-message').style.display = 'none';
+            document.getElementById('register-message').style.display = 'none';
+        }
+
+        // Функции для страницы входа
         function attemptLogin() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
@@ -236,32 +393,19 @@
                 showMessage(messageElement, result.message, 'success');
                 document.getElementById('register-form').reset();
                 setTimeout(() => {
-                    openAuthTab('login');
+                    showLoginForm();
                 }, 2000);
             } else {
                 showMessage(messageElement, result.error, 'error');
             }
         }
 
-        function fillDemoAccount(role) {
-            const accounts = {
-                'admin': { email: 'admin', password: 'admin2024' },
-                'editor': { email: 'editor', password: 'editor2024' },
-                'journalist': { email: 'journalist', password: 'journalist2024' }
-            };
-
-            const account = accounts[role];
-            if (account) {
-                document.getElementById('login-email').value = account.email;
-                document.getElementById('login-password').value = account.password;
-            }
-        }
-
         function showMessage(element, text, type) {
             element.textContent = text;
-            element.className = 'auth-message ' + type;
+            element.className = type + '-message';
             element.style.display = 'block';
             
+            // Авто-скрытие для успешных сообщений
             if (type === 'success') {
                 setTimeout(() => {
                     element.style.display = 'none';
@@ -269,9 +413,38 @@
             }
         }
 
-        // Перенаправление если уже авторизован
+        // Обработка Enter в формах
         document.addEventListener('DOMContentLoaded', () => {
-            if (authSystem.currentUser) {
+            // Логин форма
+            const loginEmail = document.getElementById('login-email');
+            const loginPassword = document.getElementById('login-password');
+            
+            if (loginEmail && loginPassword) {
+                loginEmail.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') attemptLogin();
+                });
+                loginPassword.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') attemptLogin();
+                });
+            }
+
+            // Регистрация форма
+            const regFields = [
+                'reg-username', 'reg-displayname', 'reg-email', 
+                'reg-password', 'reg-password2', 'reg-faction'
+            ];
+            
+            regFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') attemptRegister();
+                    });
+                }
+            });
+
+            // Перенаправление если уже авторизован
+            if (authSystem && authSystem.currentUser) {
                 window.location.href = 'admin.html';
             }
         });
