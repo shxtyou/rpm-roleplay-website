@@ -1,0 +1,226 @@
+/* Стили для страниц аутентификации */
+.auth-container {
+    max-width: 500px;
+    margin: 3rem auto;
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.auth-tabs {
+    display: flex;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 1.2rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.auth-tab:hover {
+    color: var(--text);
+    background: var(--surface);
+}
+
+.auth-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: var(--surface);
+}
+
+.auth-form {
+    padding: 2.5rem;
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-form h2 {
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.auth-description {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.auth-form input,
+.auth-form select {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.auth-form .btn-full {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.auth-message {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+}
+
+.auth-message.success {
+    background: rgba(39, 174, 96, 0.1);
+    border: 1px solid #27ae60;
+    color: #27ae60;
+}
+
+.auth-message.error {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+}
+
+.auth-links {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.auth-links p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.demo-accounts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.demo-account {
+    background: var(--background);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.demo-account:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.demo-account strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.auth-notice {
+    background: rgba(52, 152, 219, 0.1);
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--primary);
+    margin-top: 1.5rem;
+}
+
+.auth-notice p {
+    color: var(--text);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Адаптивность для аутентификации */
+@media (max-width: 768px) {
+    .auth-container {
+        margin: 2rem 1rem;
+    }
+    
+    .auth-form {
+        padding: 2rem 1.5rem;
+    }
+    
+    .auth-form .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .auth-tabs {
+        flex-direction: column;
+    }
+    
+    .auth-tab {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-form {
+        padding: 1.5rem 1rem;
+    }
+    
+    .auth-form h2 {
+        font-size: 1.5rem;
+    }
+    
+    .demo-accounts {
+        gap: 0.5rem;
+    }
+    
+    .demo-account {
+        padding: 0.8rem;
+        font-size: 0.8rem;
+    }
+}
