@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прислать новость - RPM SMI</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-theme">
+    <header class="newspaper-header">
+        <div class="container">
+            <div class="header-top">
+                <div class="header-info">
+                    <span class="date" id="current-date"></span>
+                    <span class="weather">Онлайн: <span id="online-count">0</span> игроков</span>
+                </div>
+                <div class="header-actions">
+                    <div class="auth-buttons" id="auth-buttons">
+                        <a href="login.html" class="auth-btn">Вход</a>
+                        <a href="index.html" class="auth-btn secondary">На главную</a>
+                    </div>
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <span class="user-name" id="user-name"></span>
+                        <a href="profile.html" class="auth-btn">Профиль</a>
+                        <a href="admin.html" class="auth-btn" id="admin-link" style="display: none;">Редакция</a>
+                        <button onclick="logout()" class="auth-btn secondary">Выйти</button>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+                </div>
+            </div>
+            
+            <div class="header-main">
+                <div class="logo">
+                    <h1 class="newspaper-title">RPM SMI</h1>
+                    <p class="newspaper-slogan">Официальные новости штата | Средства Массовой Информации</p>
+                </div>
+            </div>
+            
+            <nav class="newspaper-nav">
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="news.html">Все новости</a></li>
+                    <li><a href="submit-news.html" class="active">Прислать новость</a></li>
+                    <li><a href="interviews.html">Интервью</a></li>
+                    <li><a href="polls.html">Опросы</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Прислать новость</h1>
+            <p>Станьте нашим информационным партнером! Расскажите о важных событиях в штате RPM</p>
+        </div>
+
+        <div class="submit-news-content">
+            <div class="submit-info">
+                <div class="info-card">
+                    <h3>📝 Как это работает?</h3>
+                    <ul>
+                        <li>Заполните форму с информацией о событии</li>
+                        <li>Наши редакторы проверят информацию</li>
+                        <li>После одобрения новость будет опубликована</li>
+                        <li>Вы получите уведомление о статусе вашей заявки</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>🎯 Что мы публикуем?</h3>
+                    <ul>
+                        <li>Важные события в жизни фракций</li>
+                        <li>Криминальные происшествия</li>
+                        <li>Политические решения и заявления</li>
+                        <li>Общественные мероприятия</li>
+                        <li>Интересные истории из жизни штата</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>⚠️ Требования</h3>
+                    <ul>
+                        <li>Информация должна быть достоверной</li>
+                        <li>Соблюдайте правила ролевой игры</li>
+                        <li>Указывайте источники информации</li>
+                        <li>Не нарушайте конфиденциальность</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="submit-form-container">
+                <form class="submit-news-form" id="news-submit-form">
+                    <div class="form-section">
+                        <h3>Основная информация</h3>
+                        
+                        <div class="form-group">
+                            <label for="news-title">Заголовок новости *</label>
+                            <input type="text" id="news-title" required placeholder="Краткое и информативное название">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="news-content">Текст новости *</label>
+                            <textarea id="news-content" rows="8" required placeholder="Подробно опишите событие, укажите время, место, участников..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="news-category">Категория *</label>
+                                <select id="news-category" required>
+                                    <option value="">Выберите категорию</option>
+                                    <option value="politics">Политика</option>
+                                    <option value="crime">Криминал</option>
+                                    <option value="society">Общество</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="news-faction">Фракция</label>
+                                <select id="news-faction">
+                                    <option value="">Не указана</option>
+                                    <option value="Мэрия">Мэрия</option>
+                                    <option value="СМИ">СМИ</option>
+                                    <option value="ЦПД">ЦПД</option>
+                                    <option value="FBI">FBI</option>
+                                    <option value="Армия">Армия</option>
+                                    <option value="Университет">Университет</option>
+                                    <option value="Crips">Crips</option>
+                                    <option value="Southside Serpents">Southside Serpents</option>
+                                    <option value="Русская мафия">Русская мафия</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Детали события</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="news-location">Место события</label>
+                                <input type="text" id="news-location" placeholder="Где произошло событие?">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="news-date">Дата события</label>
+                                <input type="datetime-local" id="news-date">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="news-participants">Участники события</label>
+                            <input type="text" id="news-participants" placeholder="Кто участвовал в событии?">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="news-sources">Источники информации</label>
+                            <textarea id="news-sources" rows="3" placeholder="Откуда вы получили эту информацию?"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Контактная информация</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="submitter-name">Ваше имя *</label>
+                                <input type="text" id="submitter-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="submitter-contact">Контакт для связи</label>
+                                <input type="text" id="submitter-contact" placeholder="Discord, Telegram и т.д.">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="submitter-role">Ваша роль в событии</label>
+                            <select id="submitter-role">
+                                <option value="">Не указано</option>
+                                <option value="witness">Свидетель</option>
+                                <option value="participant">Участник</option>
+                                <option value="official">Официальное лицо</option>
+                                <option value="journalist">Журналист</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large">Отправить новость</button>
+                        <button type="reset" class="btn btn-secondary">Очистить форму</button>
+                    </div>
+
+                    <div class="form-notice">
+                        <p>* - обязательные для заполнения поля</p>
+                        <p>Отправляя форму, вы соглашаетесь с обработкой ваших данных и правилами редакции</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="submission-guidelines">
+            <h2>Рекомендации по подаче новостей</h2>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>📋 Структура</h4>
+                    <p>Начинайте с самого важного, затем добавляйте детали. Используйте абзацы для удобства чтения.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>🔍 Факты</h4>
+                    <p>Проверяйте информацию перед отправкой. Указывайте точные даты, время и места.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>🎭 RP-составляющая</h4>
+                    <p>Сохраняйте ролевой стиль изложения. Избегайте OOC (out-of-character) информации.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>⚖️ Объективность</h4>
+                    <p>Старайтесь быть нейтральными в изложении. Разделяйте факты и мнения.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="newspaper-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>RPM SMI</h4>
+                    <p>Официальные новости штата</p>
+                    <p>Основано в 2024 году</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Участие</h4>
+                    <a href="submit-news.html">Прислать новость</a>
+                    <a href="interviews.html">Интервью</a>
+                    <a href="polls.html">Опросы</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Редакция</h4>
+                    <a href="about.html">О нас</a>
+                    <a href="contact.html">Контакты</a>
+                    <a href="login.html">Вход для сотрудников</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 RPM SMI. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Обработка формы подачи новости
+        document.getElementById('news-submit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitNewsForm();
+        });
+
+        function submitNewsForm() {
+            const formData = {
+                title: document.getElementById('news-title').value,
+                content: document.getElementById('news-content').value,
+                category: document.getElementById('news-category').value,
+                faction: document.getElementById('news-faction').value,
+                location: document.getElementById('news-location').value,
+                date: document.getElementById('news-date').value,
+                participants: document.getElementById('news-participants').value,
+                sources: document.getElementById('news-sources').value,
+                submitterName: document.getElementById('submitter-name').value,
+                submitterContact: document.getElementById('submitter-contact').value,
+                submitterRole: document.getElementById('submitter-role').value,
+                submittedAt: new Date().toISOString()
+            };
+
+            // Валидация
+            if (!formData.title || !formData.content || !formData.category || !formData.submitterName) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            // Сохранение заявки
+            saveNewsSubmission(formData);
+            
+            // Показ успешного сообщения
+            showSubmissionSuccess();
+            
+            // Очистка формы
+            document.getElementById('news-submit-form').reset();
+        }
+
+        function saveNewsSubmission(formData) {
+            let submissions = JSON.parse(localStorage.getItem('news_submissions') || '[]');
+            
+            const submission = {
+                id: Date.now(),
+                ...formData,
+                status: 'pending', // pending, approved, rejected
+                reviewedBy: null,
+                reviewedAt: null,
+                notes: null
+            };
+
+            submissions.unshift(submission);
+            localStorage.setItem('news_submissions', JSON.stringify(submissions));
+        }
+
+        function showSubmissionSuccess() {
+            const successHTML = `
+                <div class="submission-success">
+                    <div class="success-icon">✅</div>
+                    <h3>Спасибо за вашу новость!</h3>
+                    <p>Ваша заявка успешно отправлена в редакцию. Мы рассмотрим её в ближайшее время.</p>
+                    <p>Статус заявки вы можете отслеживать в личном кабинете (после реализации этой функции).</p>
+                    <button onclick="closeSuccessMessage()" class="btn btn-primary">Понятно</button>
+                </div>
+            `;
+
+            const successOverlay = document.createElement('div');
+            successOverlay.className = 'success-overlay';
+            successOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            `;
+            successOverlay.innerHTML = successHTML;
+            
+            document.body.appendChild(successOverlay);
+        }
+
+        function closeSuccessMessage() {
+            const overlay = document.querySelector('.success-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        // Автозаполнение имени если пользователь авторизован
+        document.addEventListener('DOMContentLoaded', function() {
+            if (authSystem.currentUser) {
+                document.getElementById('submitter-name').value = authSystem.currentUser.displayName;
+            }
+        });
+    </script>
+
+    <style>
+        .submit-news-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+
+        .submit-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-card li {
+            padding: 0.3rem 0;
+            color: var(--text);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .info-card li:before {
+            content: '•';
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+        }
+
+        .submit-form-container {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .form-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .form-notice {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .submission-guidelines {
+            margin: 4rem 0 2rem 0;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .guideline-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .guideline-card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .guideline-card p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .submission-success {
+            background: var(--surface);
+            padding: 3rem;
+            border-radius: 12px;
+            border: 2px solid #27ae60;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 1rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .submission-success h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .submission-success p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .submit-news-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .guidelines-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>
